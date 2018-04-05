@@ -29,9 +29,9 @@ app.use(passport.initialize());
 app.set('view engine', 'hjs');
 
 // load components
-require('./app')(app, passport);
-require('./app/user')(app, passport);
-require('./app/login')(app, passport);
+require('./app')(app);
+require('./app/user')(app);
+require('./app/login')(app);
 //auto_add_routes_here_please_dont_delete
 
 require('./utils')(app,port);

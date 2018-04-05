@@ -10,6 +10,7 @@ const bcrypt = require('bcryptjs');
 
 exports.login = (req, res, next) => {
     let init = async() => {
+        console.log('req.user==> ',req.user);
         let token = jwt.sign(req.user, 'secret', {
             expiresIn: 86400 // expires in 24 hours
         });

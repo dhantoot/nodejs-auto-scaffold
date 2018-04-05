@@ -12,18 +12,16 @@ let initialize = function() {
         function(username, password, cb) {
             console.log('BasicStrategy');
             db.users.getUser(username, function(err, user) {
-                console.log('user ', user);
-                if (err) { return cb(err); }
-                if (!user) { return cb(null, false); }
+                if (err) { return cb(err, null); }
+                if (!user) { return cb('Username is incorrect', null); }
                 if (user) {
                     var passwordIsValid = bcrypt.compareSync(password, user.password);
                     if (!passwordIsValid) {
-                        return res.status(401).send({ auth: false, token: null });
+                        return cb('Password is incorrect', null);
                     } else {
-                        console.log('passwordIsValid ', passwordIsValid);
                         return cb(null, user);
                     }
-                }
+                } 
             });
         }));
 
@@ -32,9 +30,15 @@ let initialize = function() {
         function(token, cb) {
             console.log('BearerStrategy ');
             db.users.findByToken(token, function(err, user) {
-                if (err) { return cb(err); }
-                if (!user) { return cb(null, false); }
-                return cb(null, user);
+                if (err) {
+                    return cb('Token not match or has expired',null); 
+                }
+                if(!user) {
+                    return cb('Theres an error of parsing the token', null);
+                } else {
+                    return cb(null, user);
+                }
+                
             });
         }));
 }

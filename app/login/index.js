@@ -1,7 +1,8 @@
 
+    let middleware = require('../../config/middleware.js');
     let controller = require('./loginCtrl.js');
 
-    module.exports = function (router, passport) {
+    module.exports = function (router) {
     // Routes
-    router.post('/login', passport.authenticate('basic', { session: false }), controller.login);
+    router.post('/login', middleware.validateBasic, controller.login);
     }

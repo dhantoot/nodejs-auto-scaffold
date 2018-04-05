@@ -7,15 +7,16 @@ var replace = require("replace");
 
 let scaffold = function (_component, component_index, component_Ctrl, component_Test) {
     var ndex = shell.ShellString(`
+    let middleware = require('../../config/middleware.js');
     let controller = require('./${_component}Ctrl.js');
 
-    module.exports = function (router,passport) {
+    module.exports = function (router) {
         // Routes
-        router.get('/${_component}', passport.authenticate('bearer', { session: false }), controller.getAll${str.toCammelCase(_component)});
-        router.get('/${_component}/:id', passport.authenticate('bearer', { session: false }), controller.get${str.toCammelCase(_component)}ById);
-        router.post('/${_component}', passport.authenticate('bearer', { session: false }), controller.create${str.toCammelCase(_component)});
-        router.put('/${_component}/:id', passport.authenticate('bearer', { session: false }), controller.update${str.toCammelCase(_component)});
-        router.delete('/${_component}/:id', passport.authenticate('bearer', { session: false }), controller.delete${str.toCammelCase(_component)});
+        router.get('/${_component}', middleware.validateBearer, controller.getAll${str.toCammelCase(_component)});
+        router.get('/${_component}/:id', middleware.validateBearer, controller.get${str.toCammelCase(_component)}ById);
+        router.post('/${_component}', middleware.validateBearer, controller.create${str.toCammelCase(_component)});
+        router.put('/${_component}/:id', middleware.validateBearer, controller.update${str.toCammelCase(_component)});
+        router.delete('/${_component}/:id', middleware.validateBearer, controller.delete${str.toCammelCase(_component)});
     }`);
 
     ndex.to(component_index);
@@ -308,7 +309,7 @@ let scaffold = function (_component, component_index, component_Ctrl, component_
 
     replace({
         regex: "//auto_add_routes_here_please_dont_delete",
-        replacement: `require('./app/${_component}')(app, passport);\n//auto_add_routes_here_please_dont_delete`,
+        replacement: `require('./app/${_component}')(app);\n//auto_add_routes_here_please_dont_delete`,
         paths: ['./server.js'],
         recursive: false,
         silent: false,
