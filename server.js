@@ -10,7 +10,7 @@ const cookieParser = require('cookie-parser');
 const mkdirp = require('mkdirp');
 const http = require('http');
 const passport = require('passport');
-const port = process.env.DB_PORT || 3000;
+const port = process.env.SERVER_PORT || 3000;
 const app = express();
 
 global.rootdirectory = __dirname;
