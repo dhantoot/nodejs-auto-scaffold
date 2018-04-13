@@ -38,7 +38,6 @@ let initialize = function() {
                 } else {
                     return cb(null, user);
                 }
-                
             });
         }));
 }

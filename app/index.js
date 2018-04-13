@@ -52,4 +52,10 @@ module.exports = function(router, passport) {
             message: "Welcome To Heavens door"
         });
     });
+
+    router.get('/api-docs', (req, res, next) => {
+        res.render('api-docs',{'api_key': process.env.api_key}, (err, html)=>{
+            res.send(html);
+        })
+    });
 }
