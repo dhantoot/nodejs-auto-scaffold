@@ -5,21 +5,48 @@ const str = require('./cammelcase');
 var replace = require("replace");
 
 
-let scaffold = function (_component, component_index, component_Ctrl, component_Test) {
+let scaffold = function (_component, component_name, component_index, component_Ctrl, component_Test) {
     var ndex = shell.ShellString(`
     let middleware = require('../../config/middleware.js');
-    let controller = require('./${_component}Ctrl.js');
+    let ${_component} = require('./${_component}.js');
 
     module.exports = function (router) {
         // Routes
-        router.get('/${_component}', middleware.validateBearer, controller.getAll${str.toCammelCase(_component)});
-        router.get('/${_component}/:id', middleware.validateBearer, controller.get${str.toCammelCase(_component)}ById);
-        router.post('/${_component}', middleware.validateBearer, controller.create${str.toCammelCase(_component)});
-        router.put('/${_component}/:id', middleware.validateBearer, controller.update${str.toCammelCase(_component)});
-        router.delete('/${_component}/:id', middleware.validateBearer, controller.delete${str.toCammelCase(_component)});
+        router.get('/${_component}', middleware.isAuthorized, ${_component}.getAll${str.toCammelCase(_component)});
+        router.get('/${_component}/:id', middleware.isAuthorized, ${_component}.get${str.toCammelCase(_component)}ById);
+        router.post('/${_component}', middleware.isAuthorized, ${_component}.create${str.toCammelCase(_component)});
+        router.put('/${_component}/:id', middleware.isAuthorized, ${_component}.update${str.toCammelCase(_component)});
+        router.delete('/${_component}/:id', middleware.isAuthorized, ${_component}.delete${str.toCammelCase(_component)});
     }`);
 
     ndex.to(component_index);
+
+    let cname = shell.ShellString(`
+    let ${_component}Ctrl = require('./${_component}Ctrl');
+    let cb = require('../../utils/callback');
+    
+    exports.getAll${str.toCammelCase(_component)} = function onRequest(req, res) {
+        ${_component}Ctrl.getAll${str.toCammelCase(_component)}(cb.setupResponseCallback(res));
+    };
+    
+    exports.get${str.toCammelCase(_component)}ById = function onRequest(req, res) {
+        ${_component}Ctrl.get${str.toCammelCase(_component)}ById(req.params.id, cb.setupResponseCallback(res));
+    };
+    
+    exports.create${str.toCammelCase(_component)} = function onRequest(req, res) {
+        ${_component}Ctrl.create${str.toCammelCase(_component)}(req.body, cb.setupResponseCallback(res));
+    };
+    
+    exports.update${str.toCammelCase(_component)} = function onRequest(req, res) {
+        ${_component}Ctrl.update${str.toCammelCase(_component)}(req.params.id,req.body, cb.setupResponseCallback(res));
+    };
+    
+    exports.delete${str.toCammelCase(_component)} = function onRequest(req, res) {
+        ${_component}Ctrl.delete${str.toCammelCase(_component)}(req.params.id, cb.setupResponseCallback(res));
+    };`);
+
+    cname.to(component_name);
+
 
     var ctrl = shell.ShellString(`
     // Controllers
@@ -36,7 +63,7 @@ let scaffold = function (_component, component_index, component_Ctrl, component_
         return new Promise(resolve => {
             resolve(
                // put logic in here..
-               ["${_component} route is awesomely fucking working !"]
+               ["${_component} route is awesomely working !"]
             )
         })
     };
@@ -56,7 +83,7 @@ let scaffold = function (_component, component_index, component_Ctrl, component_
                // put logic in here..
             )
         })
-    }
+    };
     let _update${str.toCammelCase(_component)} = async(id,data) => {
         //initialize variables here..
         return new Promise(resolve => {
@@ -64,7 +91,7 @@ let scaffold = function (_component, component_index, component_Ctrl, component_
                 // put logic in here..
             )
         })
-    }
+    };
     let _delete${str.toCammelCase(_component)} = async (id) => {
         //initialize variables here..
         return new Promise(resolve => {
@@ -72,13 +99,12 @@ let scaffold = function (_component, component_index, component_Ctrl, component_
                 // put logic in here..
             )
         })
-    }
+    };
 
-    exports.getAll${str.toCammelCase(_component)} =  (req, res, next) =>{
+    exports.getAll${str.toCammelCase(_component)} =  (next) =>{
         let init = async () => {
             let ${_component}_resp = await _get${str.toCammelCase(_component)}s();
-            res.status(200).json({
-                success: true,
+            next(null,{
                 message: "Success",
                 icon : icon.success,
                 data: {
@@ -86,11 +112,10 @@ let scaffold = function (_component, component_index, component_Ctrl, component_
                     ${_component}s: ${_component}_resp
                 }
             });
-        }
+        };
         init().catch(err => {
             console.log(icon.error + ' OUTER LEVEL ERROR ', err);
-            res.status(500).json({
-                success: false,
+            next({
                 message: "Error getting ${_component}",
                 icon : icon.error,
                 data: {
@@ -98,91 +123,83 @@ let scaffold = function (_component, component_index, component_Ctrl, component_
                     ${_component}s: []
                 },
                 error_message: icon.error+' '+err
-            });
+            },null);
         });
-    }
+    };
 
-    exports.get${str.toCammelCase(_component)}ById =  (req, res, next) =>{
+    exports.get${str.toCammelCase(_component)}ById =  (id, next) =>{
         let init = async () => {
-            let ${_component}_resp = await _get${str.toCammelCase(_component)}ById(req.params.id);
-            res.status(200).json({
-                success: true,
+            let ${_component}_resp = await _get${str.toCammelCase(_component)}ById(id);
+            next(null,{
                 message: "Success",
                 data: ${_component}_resp
-            })
-        }
+            });
+        };
         init().catch(err => {
             console.log(icon.error + ' OUTER LEVEL ERROR ', err);
-            res.status(500).json({
-                success: false,
+            next({
                 message: "Error getting ${_component} by id",
                 icon: icon.error,
                 data: {},
                 error_message: icon.error + ' ' + err
-            });
+            },null);
         });
     }
 
-    exports.create${str.toCammelCase(_component)} =  (req, res, next) =>{
+    exports.create${str.toCammelCase(_component)} =  (data, next) =>{
         let init = async () => {
-            let ${_component}_resp = await _create${str.toCammelCase(_component)}(req.body);
-            res.status(201).json({
-                success: true,
+            let ${_component}_resp = await _create${str.toCammelCase(_component)}(data);
+            next(null,{
                 message: "Successfully Created",
                 data: ${_component}_resp
-            })
-        }
+            });
+        };
         init().catch(err => {
             console.log(icon.error + ' OUTER LEVEL ERROR ', err);
-            res.status(500).json({
-                success: false,
+            next({
                 message: "Error creating ${_component}",
                 icon: icon.error,
                 data: {},
                 error_message: icon.error + ' ' + err
-            });
+            },null);
         });
     }
 
-    exports.update${str.toCammelCase(_component)} =  (req, res, next) =>{
+    exports.update${str.toCammelCase(_component)} =  (id, data, next) =>{
         let init = async () => {
-            let ${_component}_resp = await _update${str.toCammelCase(_component)}(req.params.id, req.body);
-            res.status(201).json({
-                success: true,
+            let ${_component}_resp = await _update${str.toCammelCase(_component)}(id, data);
+            next(null,{
                 message: "Successfully Modified",
                 data: ${_component}_resp
-            })
-        }
+            });
+        };
         init().catch(err => {
             console.log(icon.error + ' OUTER LEVEL ERROR ', err);
-            res.status(500).json({
-                success: false,
+            next({
                 message: "Error updating ${_component}",
                 icon: icon.error,
                 data: {},
                 error_message: icon.error + ' ' + err
-            });
+            },null);
         });
     }
 
-    exports.delete${str.toCammelCase(_component)} =  (req, res, next) =>{
+    exports.delete${str.toCammelCase(_component)} =  (id, next) =>{
         let init = async () => {
-            let ${_component}_resp = await _delete${str.toCammelCase(_component)}(req.params.id);
-            res.status(201).json({
-                success: true,
+            let ${_component}_resp = await _delete${str.toCammelCase(_component)}(id);
+            next(null,{
                 message: "Successfully Deleted",
                 data: ${_component}_resp
-            })
-        }
+            });
+        };
         init().catch(err => {
             console.log(icon.error + ' OUTER LEVEL ERROR ', err);
-            res.status(500).json({
-                success: false,
+            next({
                 message: "Error deleting ${_component}",
                 icon: icon.error,
                 data: {},
                 error_message: icon.error + ' ' + err
-            });
+            },null);
         });
     }`);
 

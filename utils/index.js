@@ -10,13 +10,15 @@ module.exports = function(app,port) {
             const _component = process.argv[3].toLowerCase();
             const component_directory = global.rootdirectory + '/app/' + _component;
             const component_index = global.rootdirectory + '/app/' + _component + '/index.js';
+            const component_name = global.rootdirectory + '/app/' + _component + '/' + _component +'.js';
             const component_Ctrl = global.rootdirectory + '/app/' + _component + '/' + _component + 'Ctrl.js';
             const component_Test = global.rootdirectory + '/app/' + _component + '/' + _component + 'Test.js';
             shell.mkdir(component_directory);
             shell.touch(component_index);
+            shell.touch(component_name);
             shell.touch(component_Ctrl);
             shell.touch(component_Test);
-            helpers.scaffold(_component, component_index, component_Ctrl, component_Test);
+            helpers.scaffold(_component, component_name, component_index, component_Ctrl, component_Test);
             break;
         default:
             let conf = require(`../config/environment/${process.argv[2]}.js`);

@@ -8,25 +8,23 @@ const icon = require('log-symbols');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-exports.login = (req, res, next) => {
+exports.login = (user, next) => {
     let init = async() => {
-        console.log('req.user==> ',req.user);
-        let token = jwt.sign(req.user, 'secret', {
+        let token = jwt.sign(user, 'secret', {
             expiresIn: 86400 // expires in 24 hours
         });
-        res.status(201).json({
-            success: true,
+        next(null,{
             message: "Successfully Login",
             token: token
-        })
-    }
+        });
+    };
     init().catch(err => {
         console.log(icon.error + ' OUTER LEVEL ERROR ', err);
-        res.status(500).json({
-            success: false,
-            message: "Error creating login",
+        next({
+            message: "Error Login",
             icon: icon.error,
+            data: {},
             error_message: icon.error + ' ' + err
-        });
+        },null);
     });
-}
+};
