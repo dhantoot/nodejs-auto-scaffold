@@ -7,6 +7,15 @@ var bcrypt = require('bcryptjs');
 var db = require('../../app/models');
 
 let initialize = function() {
+
+    passport.serializeUser(function (user, done) {
+        done(null, user);
+    });
+
+    passport.deserializeUser(function (user, done) {
+        done(null, user);
+    });
+    
     //This is for login [username and password]
     passport.use(new BasicStrategy(
         function(username, password, cb) {
@@ -38,7 +47,6 @@ let initialize = function() {
                 } else {
                     return cb(null, user);
                 }
-                
             });
         }));
 }

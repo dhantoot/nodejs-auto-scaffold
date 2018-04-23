@@ -1,4 +1,5 @@
 // Dependencies
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const cors = require('cors')
@@ -9,9 +10,8 @@ const cookieParser = require('cookie-parser');
 const mkdirp = require('mkdirp');
 const http = require('http');
 const passport = require('passport');
-const port = process.env.PORT || 1234;
+const port = process.env.SERVER_PORT || 3000;
 const app = express();
-
 
 global.rootdirectory = __dirname;
 
@@ -26,7 +26,9 @@ app.use("/public",express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }));
 app.use(passport.initialize());
-app.set('view engine', 'hjs');
+
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
 
 // load components
 require('./app')(app);
