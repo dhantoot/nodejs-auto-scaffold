@@ -17,3 +17,5 @@ https://developers.facebook.com/docs/marketing-api/reference/ad-campaign
         - pm2 start npm -- start server.js  staging
         or
         - pm2 start npm -- start server.js  production
+5. when installing node packages, please use `npm install <package-name> --save-dev` on installing front-end dependencies otherwise
+    use normal installation for server dependencies `npm install <package-name>`

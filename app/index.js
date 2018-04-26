@@ -52,10 +52,12 @@ module.exports = function(router, passport) {
             message: "Welcome To Heavens door"
         });
     });
-
-    router.get('/api-docs', (req, res, next) => {
+    router.get('/vuejs-app', (req, res) => {
+        res.sendFile(global.rootdirectory+'/public/vuejs-app/index.html');
+    });
+    router.get('/api-docs', (req, res) => {
         res.render('api-docs',{'api_key': process.env.api_key}, (err, html)=>{
             res.send(html);
         })
     });
-}
+};

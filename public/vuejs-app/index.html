@@ -1,0 +1,27 @@
+<!---index.html--->
+<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+<div id="app">
+    <navbar-component></navbar-component>
+    <div class="container">
+        <page-heading-component></page-heading-component>
+        <create-staff-component></create-staff-component>
+        <staff-list-component></staff-list-component>
+    </div>
+
+</div>-->
+<!--Include VueJs-->
+<!-- <script src="./main.js"></script> -->
+
+<div id="app">
+    <h1>Hello App!</h1>
+    <p>
+        <!-- use router-link component for navigation. -->
+        <!-- specify the link by passing the `to` prop. -->
+        <!-- `<router-link>` will be rendered as an `<a>` tag by default -->
+        <router-link to="/foo">Go to Foo</router-link>
+        <router-link to="/bar">Go to Bar</router-link>
+    </p>
+    <!-- route outlet -->
+    <!-- component matched by the route will render here -->
+    <router-view></router-view>
+</div>

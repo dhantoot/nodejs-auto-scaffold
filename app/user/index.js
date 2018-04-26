@@ -11,4 +11,4 @@
     router.delete('/user/:id', middleware.isAuthorized, user.deleteUser);
 
     //router.get('/user/:id/me', middleware.isAuthorized, user.getMe);
-    }
+    };
