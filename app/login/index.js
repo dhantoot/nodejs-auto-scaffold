@@ -4,5 +4,5 @@
 
     module.exports = function (router) {
     // Routes
-    router.post('/login', middleware.authorize, login.login);
+    router.post(`${global.api_url}/login`, middleware.authorize, login.login);
     }

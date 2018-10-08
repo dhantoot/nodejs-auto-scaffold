@@ -40,24 +40,35 @@ models.forEach(function(model){
 module.exports.sequelize = sequelize;*/
 
 
-
+let fs = require('fs-extra');
 let passportStrategies = require('../config/passport');
 module.exports = function(router, passport) {
     console.log('initializing passport strategies.');
     passportStrategies.initialize();
 
     router.get('/', (req, res, next) => {
-        res.status(200).json({
-            success: true,
-            message: "Welcome To Heavens door"
+        res.sendFile(global.rootdirectory+'/public/docs/api-landing-page.html');
+    });
+    router.get('/docs', (req, res) => {
+        let file = 'public/docs/index.html';
+        fs.readFile(file, 'utf8', function(err, data) {
+            if (err) {
+                console.log('Error: ' + err);
+                return;
+            }
+            res.send(data);
         });
     });
-    router.get('/vuejs-app', (req, res) => {
-        res.sendFile(global.rootdirectory+'/public/vuejs-app/index.html');
-    });
-    router.get('/api-docs', (req, res) => {
-        res.render('api-docs',{'api_key': process.env.api_key}, (err, html)=>{
-            res.send(html);
-        })
+    router.get('/docs-api/v1', (req, res) => {
+        let file = 'public/docs/swagger.json';
+        console.log('file: ', file);
+        fs.readFile(file, 'utf8', function(err, data) {
+            if (err) {
+                console.log('Error: ' + err);
+                return;
+            }
+            data = JSON.parse(data);
+            res.send(data);
+        });
     });
 };
