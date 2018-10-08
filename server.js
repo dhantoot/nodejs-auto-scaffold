@@ -14,6 +14,7 @@ const port = process.env.SERVER_PORT || 3000;
 const app = express();
 
 global.rootdirectory = __dirname;
+global.api_url = '/api/1.0';
 
 // apply middlewares for express
 app.use(cors());
