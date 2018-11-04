@@ -1,14 +1,10 @@
 // Dependencies
 require('dotenv').config();
 const express = require('express');
-const path = require('path');
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const fs = require('fs');
 const cookieParser = require('cookie-parser');
-const mkdirp = require('mkdirp');
-const http = require('http');
 const passport = require('passport');
 const port = process.env.SERVER_PORT || 3000;
 const app = express();

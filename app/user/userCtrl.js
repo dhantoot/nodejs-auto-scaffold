@@ -32,10 +32,11 @@ exports.getAllUser = (next) => {
 
 exports.getUserById = (id, next) => {
     let init = async() => {
-        let user_resp = await _getUserById(id);
-        next(null,{
-            message: "Success",
-            data: user_resp
+        models.users.getUserById(id, (err, resp)=>{
+            next(null,{
+                message: "Success",
+                data: resp
+            });
         });
     };
     init().catch(err => {
