@@ -12,11 +12,11 @@ let scaffold = function (_component, component_name, component_index, component_
 
     module.exports = function (router) {
         // Routes
-        router.get('/${_component}', middleware.isAuthorized, ${_component}.getAll${str.toCammelCase(_component)});
-        router.get('/${_component}/:id', middleware.isAuthorized, ${_component}.get${str.toCammelCase(_component)}ById);
-        router.post('/${_component}', middleware.isAuthorized, ${_component}.create${str.toCammelCase(_component)});
-        router.put('/${_component}/:id', middleware.isAuthorized, ${_component}.update${str.toCammelCase(_component)});
-        router.delete('/${_component}/:id', middleware.isAuthorized, ${_component}.delete${str.toCammelCase(_component)});
+        router.get('${global.api_url}/${_component}', middleware.isAuthorized, ${_component}.getAll${str.toCammelCase(_component)});
+        router.get('${global.api_url}/${_component}/:id', middleware.isAuthorized, ${_component}.get${str.toCammelCase(_component)}ById);
+        router.post('${global.api_url}/${_component}', middleware.isAuthorized, ${_component}.create${str.toCammelCase(_component)});
+        router.put('${global.api_url}/${_component}/:id', middleware.isAuthorized, ${_component}.update${str.toCammelCase(_component)});
+        router.delete('${global.api_url}/${_component}/:id', middleware.isAuthorized, ${_component}.delete${str.toCammelCase(_component)});
     }`);
 
     ndex.to(component_index);
