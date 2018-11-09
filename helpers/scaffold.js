@@ -7,7 +7,7 @@ var replace = require("replace");
 
 let scaffold = function (_component, component_name, component_index, component_Ctrl, component_Test) {
     var ndex = shell.ShellString(`
-    let middleware = require('../../config/middleware.js');
+    let middleware = require('../../../config/middleware.js');
     let ${_component} = require('./${_component}.js');
 
     module.exports = function (router) {
@@ -23,7 +23,7 @@ let scaffold = function (_component, component_name, component_index, component_
 
     let cname = shell.ShellString(`
     let ${_component}Ctrl = require('./${_component}Ctrl');
-    let cb = require('../../utils/callback');
+    let cb = require('../../../utils/callback');
     
     exports.getAll${str.toCammelCase(_component)} = function onRequest(req, res) {
         ${_component}Ctrl.getAll${str.toCammelCase(_component)}(cb.setupResponseCallback(res));
@@ -50,7 +50,7 @@ let scaffold = function (_component, component_name, component_index, component_
 
     var ctrl = shell.ShellString(`
     // Controllers
-    const models = require("../models");
+    const models = require("../../models");
     const Sequelize = require("sequelize");
     const Joi = require("joi");
     const axios = require("axios");
@@ -326,7 +326,7 @@ let scaffold = function (_component, component_name, component_index, component_
 
     replace({
         regex: "//auto_add_routes_here_please_dont_delete",
-        replacement: `require('./app/${_component}')(app);\n//auto_add_routes_here_please_dont_delete`,
+        replacement: `require('./app/routes/${_component}')(app);\n//auto_add_routes_here_please_dont_delete`,
         paths: ['./server.js'],
         recursive: false,
         silent: false,

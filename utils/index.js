@@ -8,11 +8,11 @@ module.exports = function(app,port) {
     switch(process.argv[2]) {
         case 'component':
             const _component = process.argv[3].toLowerCase();
-            const component_directory = global.rootdirectory + '/app/' + _component;
-            const component_index = global.rootdirectory + '/app/' + _component + '/index.js';
-            const component_name = global.rootdirectory + '/app/' + _component + '/' + _component +'.js';
-            const component_Ctrl = global.rootdirectory + '/app/' + _component + '/' + _component + 'Ctrl.js';
-            const component_Test = global.rootdirectory + '/app/' + _component + '/' + _component + 'Test.js';
+            const component_directory = global.rootdirectory + '/app/routes/' + _component;
+            const component_index = global.rootdirectory + '/app/routes/' + _component + '/index.js';
+            const component_name = global.rootdirectory + '/app/routes/' + _component + '/' + _component +'.js';
+            const component_Ctrl = global.rootdirectory + '/app/routes/' + _component + '/' + _component + 'Ctrl.js';
+            const component_Test = global.rootdirectory + '/app/routes/' + _component + '/' + _component + 'Test.js';
             shell.mkdir(component_directory);
             shell.touch(component_index);
             shell.touch(component_name);
