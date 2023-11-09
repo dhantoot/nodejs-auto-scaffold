@@ -23,7 +23,7 @@ let scaffold = function (_component, component_name, component_index, component_
 
     let cname = shell.ShellString(`
     let ${_component}Ctrl = require('./${_component}Ctrl');
-    let cb = require('../../../utils/callback');
+    let cb = require('../../utils/callback');
     
     exports.getAll${str.toCammelCase(_component)} = function onRequest(req, res) {
         ${_component}Ctrl.getAll${str.toCammelCase(_component)}(cb.setupResponseCallback(res));
@@ -326,8 +326,8 @@ let scaffold = function (_component, component_name, component_index, component_
 
     replace({
         regex: "//auto_add_routes_here_please_dont_delete",
-        replacement: `require('./app/routes/${_component}')(app);\n//auto_add_routes_here_please_dont_delete`,
-        paths: ['./server.js'],
+        replacement: `require('../../app/routes/${_component}')(app);\n    //auto_add_routes_here_please_dont_delete`,
+        paths: ['./app/utils/routing.js'],
         recursive: false,
         silent: false,
     });

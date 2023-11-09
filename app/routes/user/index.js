@@ -1,5 +1,5 @@
 
-    let middleware = require('../../config/middleware.js');
+    let middleware = require('../../../config/middleware.js');
     let user = require('./user.js');
 
     module.exports = function (router) {

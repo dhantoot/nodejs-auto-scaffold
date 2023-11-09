@@ -1,5 +1,5 @@
 // Controllers
-let models = require("../models");
+let models = require("../../models");
 let Joi = require("joi");
 let axios = require("axios");
 let Hogan = require('hogan.js');

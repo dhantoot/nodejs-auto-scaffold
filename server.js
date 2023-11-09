@@ -27,12 +27,7 @@ app.use(passport.initialize());
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
-// load components
-require('./app')(app);
-require('./app/user')(app);
-require('./app/login')(app);
-//auto_add_routes_here_please_dont_delete
-
-require('./utils')(app,port);
+// initiate auto-scaffolding feature and start listening to server
+require('./app')(app,port);
 
 

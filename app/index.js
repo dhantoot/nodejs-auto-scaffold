@@ -39,10 +39,14 @@ models.forEach(function(model){
 
 module.exports.sequelize = sequelize;*/
 
-
-let fs = require('fs-extra');
-let passportStrategies = require('../config/passport');
 module.exports = function(router, passport) {
+    // load components
+    require('./utils')(router);
+
+    let fs = require('fs-extra');
+    let passportStrategies = require('../config/passport');
+    
+
     console.log('initializing passport strategies.');
     passportStrategies.initialize();
 

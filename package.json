@@ -5,11 +5,11 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha",
-    "start": "node server.js development",
+    "start": "nodemon server.js development",
     "dev": "nodemon server.js development",
     "staging": "nodemon server.js staging",
     "production": "nodemon server.js production",
-    "component": "node server.js component"
+    "add:route": "node server.js add:route"
   },
   "author": "",
   "license": "ISC",

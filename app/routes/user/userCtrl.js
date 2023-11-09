@@ -1,4 +1,4 @@
-const models = require("../models");
+const models = require("../../models");
 const icon = require('log-symbols');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
